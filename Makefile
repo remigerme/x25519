@@ -4,14 +4,18 @@ INCLUDES = -lm -lgmp -Isrc
 
 all: x25519
 
-x25519: src/montgomery.c src/x25519.c
+x25519: src/io.c src/montgomery.c src/x25519.c
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^
 
 test-montgomery: src/montgomery.c tests/montgomery.c
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^
 
-tests: test-montgomery
+test-io: src/io.c tests/io.c
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^
+
+tests: test-montgomery test-io
 	./test-montgomery
+	./test-io
 
 clean:
 	rm -f TODO

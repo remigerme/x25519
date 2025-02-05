@@ -1,3 +1,5 @@
 .DS_Store
 .vscode
 test-montgomery
+test-io
+x25519
