@@ -13,9 +13,10 @@ test-montgomery: src/montgomery.c tests/montgomery.c
 test-io: src/io.c tests/io.c
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^
 
-tests: test-montgomery test-io
+tests: x25519 test-montgomery test-io
 	./test-montgomery
 	./test-io
+	./tests/x25519.sh
 
 clean:
 	rm -f TODO
