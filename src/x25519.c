@@ -8,16 +8,11 @@ int main(int argc, char **argv) {
         fprintf(stderr, "[Usage] ./x25519 m [u]\n"
                         "Where :\n"
                         "\tm : \n"
-                        "\tu : optional, if provided, \n");
+                        "\tu : optional, starting point (default is (9, 1))\n");
         return 1;
     }
     mpz_t m, a24, mod;
     mpz_inits(m, a24, mod, NULL);
-
-    uchar z[32];
-    hextouchars(argv[1], 32, z);
-
-    decode_scalar_25519(z, m);
 
     // Common parameters
     mpz_set_ui(mod, 1);
@@ -29,6 +24,12 @@ int main(int argc, char **argv) {
     point res;
     point_init(&res);
 
+    // Reading m
+    uchar mbuf[32];
+    hextouchars(argv[1], 32, mbuf);
+
+    decode_scalar_25519(mbuf, m);
+
     // Starting point
     point p;
     point_init(&p);
@@ -36,6 +37,10 @@ int main(int argc, char **argv) {
         mpz_set_ui(p.x, 9);
         mpz_set_ui(p.z, 1);
     } else {
+        uchar ubuf[32];
+        hextouchars(argv[2], 32, ubuf);
+        decode_u_coord(ubuf, 255, p.x);
+        mpz_set_ui(p.z, 1);
     }
     ladder(&res, m, p, a24, mod);
 
