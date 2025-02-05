@@ -17,6 +17,7 @@ tests: x25519 test-montgomery test-io
 	./test-montgomery
 	./test-io
 	./tests/x25519.sh
+	./tests/iterative.sh
 
 clean:
-	rm -f TODO
+	rm -f x25519 test-montgomery test-io
