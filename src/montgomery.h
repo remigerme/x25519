@@ -40,9 +40,17 @@ void xdbl(point *rop, point p, mpz_t a24, mpz_t mod);
 /**
  * See slide 13 / section 5
  * Set rop to [m]p
+ * p should be x-coord of a normalised point (z = 1)
  * @param a24 Value of (A + 2) / 4
  * @param mod is 2^255 - 19 for x25519
  */
-void ladder(point *rop, mpz_t m, point p, mpz_t a24, mpz_t mod);
+void ladder(mpz_t rop, mpz_t m, mpz_t p, mpz_t a24, mpz_t mod);
+
+/**
+ * See slide 13 / section 5
+ * Set rop to [m]p
+ * p should be x-coord of a normalised point (z = 1)
+ */
+void curve25519_ladder(mpz_t rop, mpz_t m, mpz_t p);
 
 #endif // MONTGOMERY_H

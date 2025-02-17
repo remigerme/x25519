@@ -115,15 +115,17 @@ void point_set(point *rop, point p) {
     mpz_set(rop->z, p.z);
 }
 
-void ladder(point *rop, mpz_t m, point p, mpz_t a24, mpz_t mod) {
+void ladder(mpz_t rop, mpz_t m, mpz_t p, mpz_t a24, mpz_t mod) {
     // Dif
-    point u;
+    point u, res;
     point_init(&u);
-    point_set(&u, p);
+    mpz_set(u.x, p);
+    mpz_set_ui(u.z, 1);
 
-    // rop is x0
-    mpz_set_ui(rop->x, 1);
-    mpz_set_ui(rop->z, 0);
+    // res is x0
+    point_init(&res);
+    mpz_set_ui(res.x, 1);
+    mpz_set_ui(res.z, 0);
 
     point x1;
     point_init(&x1);
@@ -137,15 +139,33 @@ void ladder(point *rop, mpz_t m, point p, mpz_t a24, mpz_t mod) {
     for (int i = n_bits - 1; i >= 0; --i) {
         int mi = mpz_tstbit(m, i);
 
-        cswap(mi, rop, &x1);
+        cswap(mi, &res, &x1);
 
-        point_set(&t, *rop);
-        xdbl(rop, *rop, a24, mod);
+        point_set(&t, res);
+        xdbl(&res, res, a24, mod);
         xadd(&x1, t, x1, u, mod);
 
-        cswap(mi, rop, &x1);
+        cswap(mi, &res, &x1);
     }
+    mpz_set(rop, res.x);
+
     point_clear(&u);
     point_clear(&x1);
     point_clear(&t);
+    point_clear(&res);
+}
+
+void curve25519_ladder(mpz_t rop, mpz_t m, mpz_t p) {
+    mpz_t a24, mod;
+    mpz_inits(a24, mod, NULL);
+
+    mpz_set_ui(mod, 1);
+    mpz_mul_2exp(mod, mod, 255);
+    mpz_sub_ui(mod, mod, 19);
+
+    mpz_set_ui(a24, 121666);
+
+    ladder(rop, m, p, a24, mod);
+
+    mpz_clears(a24, mod);
 }
