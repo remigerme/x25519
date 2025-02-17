@@ -1,4 +1,4 @@
-#include "io.h"
+#include "montgomery_io.h"
 
 #include <assert.h>
 #include <stdlib.h>

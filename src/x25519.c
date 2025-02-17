@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "io.h"
 #include "montgomery.h"
+#include "montgomery_io.h"
 
 int main(int argc, char **argv) {
     if (argc != 2 && argc != 3) {

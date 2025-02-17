@@ -1,5 +1,5 @@
-#ifndef IO_H
-#define IO_H
+#ifndef MONTGOMERY_IO_H
+#define MONTGOMERY_IO_H
 
 #include <gmp.h>
 
@@ -31,4 +31,4 @@ void encode_u_coord(mpz_t u, int n_bits, mpz_t prime, uchar *ub);
  */
 void decode_scalar_25519(uchar kb[32], mpz_t decoded);
 
-#endif // IO_H
+#endif // MONTGOMERY_IO_H
